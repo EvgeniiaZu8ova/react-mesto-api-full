@@ -1,0 +1,21 @@
+.header {
+  width: 100%;
+  border-bottom: 1px solid rgb(84, 84, 84, 0.7);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+@media all and (min-width: 320px) {
+  .header {
+    padding: 28px 30px 31.6px;
+  }
+}
+
+@media all and (min-width: 1280px) {
+  .header {
+    padding: 0 0 41px;
+  }
+}
