@@ -14,6 +14,7 @@ const cardRouter = require('./routes/cards');
 const { createUser, login } = require('./controllers/users');
 
 const auth = require('./middlewares/auth');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const SearchError = require('./errors/search-err');
 
@@ -27,6 +28,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb', mongoConfig);
 
 app.use(cookieParser());
 
+app.use(requestLogger);
+
 app.post('/signup', celebrate({ body: signupJoiObj }), createUser);
 
 app.post('/signin', celebrate({ body: signinJoiObj }), login);
@@ -37,6 +40,8 @@ app.use('/cards', auth, cardRouter);
 app.use('*', () => {
   throw new SearchError('Страницы по запрашиваемому адресу не существует');
 });
+
+app.use(errorLogger);
 
 app.use(errors());
 
