@@ -45,11 +45,6 @@ function App() {
 
   const history = useHistory();
 
-  // Проверка при загрузке страницы, авторизован ли пользователь
-  React.useEffect(() => {
-    checkToken();
-  }, []);
-
   // Переход на главную страницу, если пользователь авторизован
   React.useEffect(() => {
     if (loggedIn) {
@@ -60,44 +55,28 @@ function App() {
   // Загрузка на страницу данных пользователя и карточек с сервера при запуске приложения
   React.useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([userData, cards]) => {
-        setCurrentUser(userData);
-        setCards(cards);
-      })
-      .catch((err) => {
+    .then(([userData, cards]) => {
+      setCurrentUser(userData);
+      setCards(cards);
+      setLoggedIn(true);
+      setUserEmail(userData.email);
+    })
+    .catch((err) => {
+      if (err.message === 'Ошибка 401') {
+        history.push("./signin");
+      } else {
         console.log("Ошибка при загрузке данных пользователя и карточек", err.message);
-      });
-  }, []);
-
-  // Проверка токена
-  function checkToken() {
-    const jwt = localStorage.getItem("jwt");
-    if (!jwt) {
-      return;
-    }
-
-    return auth
-      .validateToken(jwt)
-      .then((res) => {
-        setUserEmail(res.data.email);
-        setLoggedIn(true);
-      })
-      .catch((err) => {
-        console.log("Ошибка при валидации токена", err.message);
-      });
-  }
+      }
+    });
+  }, [history, loggedIn]);
 
   // Обработчик входа пользователя
   function onLogin(data) {
     return auth
       .login(data)
       .then((res) => {
-        if (res.token) {
-          setUserEmail(data.email);
-          setLoggedIn(true);
-          localStorage.setItem("jwt", res.token);
-        }
-        return;
+        setUserEmail(res.email);
+        setLoggedIn(true);
       })
       .catch((err) => {
         console.log("Ошибка при попытке авторизовать пользователя", err.message);
@@ -121,10 +100,16 @@ function App() {
 
   // Обработчик выхода пользователя
   function onLogout() {
-    setLoggedIn(false);
-    setUserEmail("");
-    localStorage.removeItem("jwt");
-    history.push("./sign-in");
+    return auth
+      .logout()
+      .then(() => {
+        setLoggedIn(false);
+        setUserEmail("");
+        history.push("./sign-in");
+      })
+      .catch((err) => {
+        console.log("Ошибка при попытке выхода из лчиного кабинета", err.message);
+      });
   }
 
   // Функции открытия модальных окон

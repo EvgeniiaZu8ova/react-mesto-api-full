@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { celebrate, errors } = require('celebrate');
@@ -11,7 +12,7 @@ const {
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
 
-const { createUser, login } = require('./controllers/users');
+const { createUser, login, logout } = require('./controllers/users');
 
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -20,6 +21,12 @@ const SearchError = require('./errors/search-err');
 
 const { PORT = portVar } = process.env;
 const app = express();
+
+app.use(cors({
+  origin: true,
+  exposedHeaders: '*',
+  credentials: true,
+}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -33,6 +40,8 @@ app.use(requestLogger);
 app.post('/signup', celebrate({ body: signupJoiObj }), createUser);
 
 app.post('/signin', celebrate({ body: signinJoiObj }), login);
+
+app.post('/signout', auth, logout);
 
 app.use('/users', auth, userRouter);
 app.use('/cards', auth, cardRouter);

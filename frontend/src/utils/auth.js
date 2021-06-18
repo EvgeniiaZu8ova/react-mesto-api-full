@@ -1,4 +1,4 @@
-import { authOptions } from "../utils/utils";
+import { options } from "../utils/utils";
 
 class AuthApi {
   constructor(config) {
@@ -18,6 +18,7 @@ class AuthApi {
     return fetch(`${this._baseUrl}/signup`, {
       method: "POST",
       headers: this._headers,
+      credentials: 'include',
       body: JSON.stringify({
         password: data.password,
         email: data.email,
@@ -29,6 +30,7 @@ class AuthApi {
     return fetch(`${this._baseUrl}/signin`, {
       method: "POST",
       headers: this._headers,
+      credentials: 'include',
       body: JSON.stringify({
         password: data.password,
         email: data.email,
@@ -36,17 +38,16 @@ class AuthApi {
     }).then((res) => this._handlePromise(res));
   }
 
-  validateToken(token) {
-    return fetch(`${this._baseUrl}/users/me`, {
-      headers: {
-        ...this._headers,
-        Authorization: `Bearer ${token}`,
-      },
+  logout() {
+    return fetch(`${this._baseUrl}/signout`, {
+      method: "POST",
+      headers: this._headers,
+      credentials: 'include',
     }).then((res) => this._handlePromise(res));
   }
 }
 
 // Создание экземпляра класса AuthApi
-const auth = new AuthApi(authOptions);
+const auth = new AuthApi(options);
 
 export default auth;

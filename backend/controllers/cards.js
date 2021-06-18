@@ -15,7 +15,7 @@ async function getCards(req, res, next) {
 
   try {
     cards = await Card.find({});
-    res.send({ data: cards });
+    res.send(cards);
   } catch (e) {
     next(e);
   }

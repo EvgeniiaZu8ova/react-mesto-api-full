@@ -19,7 +19,7 @@ async function getUsers(req, res, next) {
 
   try {
     users = await User.find({});
-    res.send({ data: users });
+    res.send(users);
   } catch (e) {
     next(e);
   }
@@ -139,11 +139,20 @@ async function login(req, res, next) {
     user = await User.findUserByCredentials(email, password);
 
     const token = jwt.sign({ _id: user._id }, 'secret-key', { expiresIn: '7d' });
-    return res.cookie('token', token, { httpOnly: true }).end();
+    // return res.cookie('token', token, { httpOnly: true }).end();
+    return res.cookie('token', token, {
+      maxAge: 3600000,
+      httpOnly: true,
+      sameSite: true,
+    }).send(user.toJSON());
   } catch (e) {
     const error = new AuthError(userAuth);
     next(error);
   }
+}
+
+function logout(req, res) {
+  return res.clearCookie('token').send({ message: 'Вы вышли из личного кабинета' });
 }
 
 async function getUserInfo(req, res, next) {
@@ -157,7 +166,7 @@ async function getUserInfo(req, res, next) {
       throw new SearchError(userSearch);
     }
 
-    res.send({ data: user });
+    res.send(user);
   } catch (e) {
     next(e);
   }
@@ -170,5 +179,6 @@ module.exports = {
   updateUser,
   updateAvatar,
   login,
+  logout,
   getUserInfo,
 };
