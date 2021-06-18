@@ -68,7 +68,7 @@ async function createCard(req, res, next) {
 
   try {
     card = await Card.create({ name, link, owner });
-    res.status(201).send({ data: card });
+    res.status(201).send(card);
   } catch (e) {
     if (e.name === 'ValidationError') {
       const error = new DataError(cardCreate);
@@ -90,7 +90,7 @@ async function likeCard(req, res, next) {
       throw new SearchError(cardSearch);
     }
 
-    res.send({ data: card });
+    res.send(card);
   } catch (e) {
     if (e.name === 'CastError') {
       const error = new DataError(cardLike);
@@ -112,7 +112,7 @@ async function dislikeCard(req, res, next) {
       throw new SearchError(cardSearch);
     }
 
-    res.send({ data: card });
+    res.send(card);
   } catch (e) {
     if (e.name === 'CastError') {
       const error = new DataError(cardLike);

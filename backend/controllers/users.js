@@ -90,7 +90,7 @@ async function updateUser(req, res, next) {
       throw new SearchError(userSearch);
     }
 
-    res.send({ data: user });
+    res.send(user);
   } catch (e) {
     if (e.name === 'ValidationError') {
       const error = new DataError(userUpdate);
@@ -118,7 +118,7 @@ async function updateAvatar(req, res, next) {
       throw new SearchError(userSearch);
     }
 
-    res.send({ data: user });
+    res.send(user);
   } catch (e) {
     const bool = e.name === 'ValidationError' || 'CastError';
     if (bool) {
@@ -139,7 +139,6 @@ async function login(req, res, next) {
     user = await User.findUserByCredentials(email, password);
 
     const token = jwt.sign({ _id: user._id }, 'secret-key', { expiresIn: '7d' });
-    // return res.cookie('token', token, { httpOnly: true }).end();
     return res.cookie('token', token, {
       maxAge: 3600000,
       httpOnly: true,
