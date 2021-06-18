@@ -13,7 +13,7 @@ const messages = {
   cardDelete: 'Вы не можете удалять чужие карточки.',
 };
 
-const portVar = 3001;
+const portVar = 3000;
 
 const mongoConfig = {
   useNewUrlParser: true,
