@@ -1,3 +1,4 @@
+require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -7,6 +8,8 @@ const SearchError = require('../errors/search-err');
 const DataError = require('../errors/data-err');
 const AuthError = require('../errors/auth-err');
 const RegisterError = require('../errors/register-err');
+
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 const { messages } = require('../utils/utils');
 
@@ -138,7 +141,7 @@ async function login(req, res, next) {
   try {
     user = await User.findUserByCredentials(email, password);
 
-    const token = jwt.sign({ _id: user._id }, 'secret-key', { expiresIn: '7d' });
+    const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'secret-key', { expiresIn: '7d' });
     return res.cookie('token', token, {
       maxAge: 3600000,
       httpOnly: true,
