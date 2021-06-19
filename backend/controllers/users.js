@@ -53,6 +53,10 @@ async function createUser(req, res, next) {
   let user;
 
   try {
+    if (!email || !password) {
+      throw new DataError(userCreate);
+    }
+
     hash = await bcrypt.hash(password, 10);
 
     try {
@@ -61,16 +65,16 @@ async function createUser(req, res, next) {
       });
       res.send({ data: user });
     } catch (e) {
+      if (e.name === 'ValidationError') {
+        const error = new DataError(userCreate);
+        next(error);
+      } else if (e.name === 'MongoError') {
+        const error = new RegisterError(userReg);
+        next(error);
+      }
       next(e);
     }
   } catch (e) {
-    if (e.name === 'ValidationError') {
-      const error = new DataError(userCreate);
-      next(error);
-    } else if (e.name === 'MongoError' && e.code === 11000) {
-      const error = new RegisterError(userReg);
-      next(error);
-    }
     next(e);
   }
 }
