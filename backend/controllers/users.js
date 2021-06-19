@@ -9,7 +9,7 @@ const DataError = require('../errors/data-err');
 const AuthError = require('../errors/auth-err');
 const RegisterError = require('../errors/register-err');
 
-const { NODE_ENV, JWT_SECRET } = process.env;
+const { NODE_ENV, JWT_SECRET = 'secret-key' } = process.env;
 
 const { messages } = require('../utils/utils');
 
