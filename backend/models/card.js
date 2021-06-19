@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const { linkRegex } = require('../utils/utils');
+
 const cardSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -12,7 +14,7 @@ const cardSchema = new mongoose.Schema({
     required: true,
     validate: {
       // eslint-disable-next-line no-useless-escape
-      validator: (v) => /https?:\/\/(www\.)?([A-Za-z0-9\-]{2,}\.)([A-Za-z0-9\-\.\_\~\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\,\;\=]{2,})\#?/.test(v),
+      validator: (v) => linkRegex.test(v),
       message: 'Необходимо передать ссылку',
     },
   },

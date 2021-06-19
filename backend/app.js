@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 const { celebrate, errors } = require('celebrate');
 
 const {
-  portVar, mongoConfig, signupJoiObj, signinJoiObj,
+  portVar, mongoConfig, handleFinalErrors, signupJoiObj, signinJoiObj,
 } = require('./utils/utils');
 
 const userRouter = require('./routes/users');
@@ -63,15 +63,7 @@ app.use(errors());
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-
-  res
-    .status(statusCode)
-    .send({
-      message: statusCode === 500
-        ? 'На сервере произошла ошибка'
-        : message,
-    });
+  handleFinalErrors(err, res);
 });
 
 app.listen(PORT, () => {

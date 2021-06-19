@@ -22,8 +22,20 @@ const mongoConfig = {
   useUnifiedTopology: true,
 };
 
+const handleFinalErrors = (err, res) => {
+  const { statusCode = 500, message } = err;
+
+  res
+    .status(statusCode)
+    .send({
+      message: statusCode === 500
+        ? 'На сервере произошла ошибка'
+        : message,
+    });
+};
+
 // eslint-disable-next-line no-useless-escape
-const linkRegex = /https?:\/\/(www\.)?([A-Za-z0-9\-]{2,}\.)([A-Za-z0-9\-\.\_\~\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\,\;\=]{2,})\#?/;
+const linkRegex = /https?:\/\/(www\.)?([A-Za-z0-9\-]{1,}\.)([A-Za-z0-9\-\.\_\~\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\,\;\=]{2,})\#?/;
 
 const signupJoiObj = Joi.object().keys({
   email: Joi.string().required().email(),
@@ -64,6 +76,8 @@ module.exports = {
   messages,
   portVar,
   mongoConfig,
+  handleFinalErrors,
+  linkRegex,
   signupJoiObj,
   signinJoiObj,
   findUserJoiObj,
