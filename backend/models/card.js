@@ -12,7 +12,7 @@ const cardSchema = new mongoose.Schema({
     required: true,
     validate: {
       // eslint-disable-next-line no-useless-escape
-      validator: (v) => /https*:\/\/w*[A-Za-z0-9\-\.\_\~\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\,\;\=]{5,}\#*/.test(v),
+      validator: (v) => /https?:\/\/(www\.)?([A-Za-z0-9\-]{2,}\.)([A-Za-z0-9\-\.\_\~\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\,\;\=]{2,})\#?/.test(v),
       message: 'Необходимо передать ссылку',
     },
   },

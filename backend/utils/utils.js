@@ -22,6 +22,9 @@ const mongoConfig = {
   useUnifiedTopology: true,
 };
 
+// eslint-disable-next-line no-useless-escape
+const linkRegex = /https?:\/\/(www\.)?([A-Za-z0-9\-]{2,}\.)([A-Za-z0-9\-\.\_\~\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\,\;\=]{2,})\#?/;
+
 const signupJoiObj = Joi.object().keys({
   email: Joi.string().required().email(),
   password: Joi.string().required().min(8),
@@ -45,7 +48,7 @@ const updateUserJoiObj = Joi.object().keys({
 });
 
 const updateAvatarJoiObj = Joi.object().keys({
-  avatar: Joi.string().required(),
+  avatar: Joi.string().required().pattern(linkRegex),
 });
 
 const findCardJoiObj = Joi.object().keys({
@@ -54,7 +57,7 @@ const findCardJoiObj = Joi.object().keys({
 
 const createCardJoiObj = Joi.object().keys({
   name: Joi.string().min(2).max(30),
-  link: Joi.string(),
+  link: Joi.string().required().pattern(linkRegex),
 });
 
 module.exports = {
