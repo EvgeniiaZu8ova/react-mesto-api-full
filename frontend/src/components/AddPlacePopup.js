@@ -110,6 +110,7 @@ function AddPlacePopup(props) {
         required
         type="url"
         name="link"
+        pattern="https?:\/\/(www\.)?([\w\-]{1,}\.)([\w\.~:\/\?#\[\]@!\$&'\(\)\*\+,;=\-]{2,})#?"
         placeholder="Ссылка на изображение"
         className={`popup__text ${isLinkValid === false && "popup__text_type_error"}`}
       />

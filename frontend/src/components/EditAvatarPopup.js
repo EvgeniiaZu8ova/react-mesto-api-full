@@ -77,6 +77,7 @@ function EditAvatarPopup(props) {
         required
         type="url"
         name="avatar"
+        pattern="https?:\/\/(www\.)?([\w\-]{1,}\.)([\w\.~:\/\?#\[\]@!\$&'\(\)\*\+,;=\-]{2,})#?"
         placeholder="Ссылка на изображение"
         className={`popup__text ${isAvatarValid === false && "popup__text_type_error"}`}
       />

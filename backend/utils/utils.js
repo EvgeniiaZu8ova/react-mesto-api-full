@@ -35,7 +35,7 @@ const handleFinalErrors = (err, res) => {
 };
 
 // eslint-disable-next-line no-useless-escape
-const linkRegex = /https?:\/\/(www\.)?([A-Za-z0-9\-]{1,}\.)([A-Za-z0-9\-\.\_\~\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\,\;\=]{2,})\#?/;
+const linkRegex = /https?:\/\/(www\.)?([\w\-]{1,}\.)([\w\.~:\/\?#\[\]@!\$&'\(\)\*\+,;=\-]{2,})#?/;
 
 const signupJoiObj = Joi.object().keys({
   email: Joi.string().required().email(),
