@@ -36,7 +36,7 @@ const signinJoiObj = Joi.object().keys({
 });
 
 const findUserJoiObj = Joi.object().keys({
-  userId: Joi.string().alphanum().length(24),
+  userId: Joi.string().length(24).hex(),
 });
 
 const updateUserJoiObj = Joi.object().keys({
@@ -49,7 +49,7 @@ const updateAvatarJoiObj = Joi.object().keys({
 });
 
 const findCardJoiObj = Joi.object().keys({
-  cardId: Joi.string().alphanum().length(24),
+  cardId: Joi.string().length(24).hex(),
 });
 
 const createCardJoiObj = Joi.object().keys({
