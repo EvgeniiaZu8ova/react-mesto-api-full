@@ -6,7 +6,7 @@ Welcome to Mesto website! This is a perfect place to share your pictures of beau
 
 ## Demo link:  
 
-You can visit homepage of the app here: https://react-burger-f9d9ibv6g-evgeniiazu8ova.vercel.app/  
+You can visit homepage of the app here: https://react-mesto-api-full-ha4to8dop-evgeniiazu8ova.vercel.app  
 Unfortunately, you won't be able to login here, as you need to run back-end on your local machine (you will find instructions further). However, you can also get familiar with app without need to login here (this is another version of project without self-made back-end, using third-party API): https://evgeniiazu8ova.github.io/mesto-react/  
 
 ## Table of Content:  
